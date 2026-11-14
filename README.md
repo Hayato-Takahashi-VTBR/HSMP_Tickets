@@ -12,6 +12,11 @@ O endereço esperado é:
 
 `https://hayato-takahashi-vtbr.github.io/HSMP_Tickets/`
 
+Em **Settings → Pages → Build and deployment**, defina **Source** como
+**GitHub Actions**. Se a origem estiver configurada para publicar a branch
+`main`, o Pages serve o `index.html` de desenvolvimento em vez do site
+compilado em `dist`.
+
 ### 1. Publicar a API
 
 O Pages não executa o servidor Express. Para manter envio de e-mails e avatares,
