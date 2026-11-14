@@ -1,0 +1,153 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Global Safety Net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Hardened Global Helpers
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isVerifiedUser() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+
+    function isOwner(userId) {
+      return isVerifiedUser() && request.auth.uid == userId;
+    }
+
+    // Validation Blueprint: GoldenTicket
+    function isValidGoldenTicket(data) {
+      return data.keys().hasAll([
+          'ownerUid',
+          'minecraftNick',
+          'ticketCode',
+          'platformNumber',
+          'carriageCode',
+          'emailStatus',
+          'issuedAt',
+          'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'ownerUid',
+          'minecraftNick',
+          'ticketCode',
+          'platformNumber',
+          'carriageCode',
+          'emailStatus',
+          'issuedAt',
+          'updatedAt'
+        ])
+        && data.ownerUid is string
+        && data.ownerUid.size() >= 1
+        && data.ownerUid.size() <= 128
+        && data.ownerUid == request.auth.uid
+        && data.minecraftNick is string
+        && data.minecraftNick.size() >= 3
+        && data.minecraftNick.size() <= 16
+        && data.minecraftNick.matches('^[a-zA-Z0-9_]+$')
+        && data.ticketCode is string
+        && data.ticketCode.size() >= 8
+        && data.ticketCode.size() <= 24
+        && data.ticketCode.matches('^HSMP-[A-Z0-9-]+$')
+        && data.platformNumber is string
+        && data.platformNumber.size() >= 1
+        && data.platformNumber.size() <= 8
+        && data.carriageCode is string
+        && data.carriageCode.size() >= 1
+        && data.carriageCode.size() <= 16
+        && data.emailStatus in ['pending', 'sent', 'preview_ready']
+        && data.issuedAt is timestamp
+        && data.updatedAt is timestamp;
+    }
+
+    // Validation Blueprint: PlayerPrivate (PII Isolation)
+    function isValidPlayerPrivate(data) {
+      return data.keys().hasAll([
+          'ownerUid',
+          'email',
+          'createdAt',
+          'updatedAt'
+        ])
+        && data.keys().hasOnly([
+          'ownerUid',
+          'email',
+          'lastNotifiedAt',
+          'createdAt',
+          'updatedAt'
+        ])
+        && data.ownerUid is string
+        && data.ownerUid.size() >= 1
+        && data.ownerUid.size() <= 128
+        && data.ownerUid == request.auth.uid
+        && data.email is string
+        && data.email.size() >= 5
+        && data.email.size() <= 254
+        && data.createdAt is timestamp
+        && data.updatedAt is timestamp
+        && (!('lastNotifiedAt' in data) || data.lastNotifiedAt is timestamp);
+    }
+
+    match /tickets/{ticketId} {
+      allow get: if isValidId(ticketId) && isOwner(ticketId);
+      allow list: if isVerifiedUser() && resource.data.ownerUid == request.auth.uid;
+      allow create: if isValidId(ticketId)
+        && isOwner(ticketId)
+        && isValidGoldenTicket(incoming())
+        && incoming().issuedAt == request.time
+        && incoming().updatedAt == request.time;
+      allow update: if isValidId(ticketId)
+        && isOwner(ticketId)
+        && isValidGoldenTicket(incoming())
+        && incoming().ownerUid == existing().ownerUid
+        && incoming().issuedAt == existing().issuedAt
+        && incoming().ticketCode == existing().ticketCode
+        && incoming().platformNumber == existing().platformNumber
+        && incoming().carriageCode == existing().carriageCode
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'minecraftNick',
+          'emailStatus',
+          'updatedAt'
+        ]);
+      allow delete: if false;
+    }
+
+    match /playerPrivate/{userId} {
+      allow get: if isValidId(userId) && isOwner(userId);
+      allow list: if isVerifiedUser() && resource.data.ownerUid == request.auth.uid;
+      allow create: if isValidId(userId)
+        && isOwner(userId)
+        && isValidPlayerPrivate(incoming())
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+      allow update: if isValidId(userId)
+        && isOwner(userId)
+        && isValidPlayerPrivate(incoming())
+        && incoming().ownerUid == existing().ownerUid
+        && incoming().createdAt == existing().createdAt
+        && incoming().updatedAt == request.time
+        && incoming().diff(existing()).affectedKeys().hasOnly([
+          'email',
+          'lastNotifiedAt',
+          'updatedAt'
+        ]);
+      allow delete: if false;
+    }
+  }
+}

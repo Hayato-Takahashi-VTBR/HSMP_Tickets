@@ -1,0 +1,6 @@
+{
+  "name": "HSMP — Ticket Dourado",
+  "description": "Portal oficial de embarque na Linha Zero com destino ao HSMP, conduzido pela empresa de Pesquisa e Desenvolvimento PSI e desenvolvido pela Prisma Estudios.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

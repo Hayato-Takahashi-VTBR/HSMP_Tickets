@@ -1,0 +1,382 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Cinzel", Georgia, serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  body {
+    font-family: var(--font-mono);
+    background-color: #030406;
+    color: #e6e8ee;
+  }
+}
+
+/* Old CRT Computer Console Aesthetic */
+.crt-monitor-screen {
+  background-color: #06080b;
+  background-image:
+    radial-gradient(ellipse at center, rgba(245, 184, 46, 0.04) 0%, rgba(3, 4, 6, 0.85) 100%),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255, 255, 255, 0.022) 0px,
+      rgba(255, 255, 255, 0.022) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+}
+
+.crt-bezel {
+  box-shadow:
+    inset 0 0 60px rgba(0, 0, 0, 0.9),
+    0 0 0 1px #1d212b,
+    0 24px 70px rgba(0, 0, 0, 0.95);
+}
+
+/* Pixelated golden train ticket bevel (preserved intact) */
+.pixel-ticket-shell {
+  box-shadow:
+    inset 3px 3px 0 0 #fff1a8,
+    inset -3px -3px 0 0 #7c4d08,
+    0 0 0 3px #140e04,
+    0 24px 60px rgba(0, 0, 0, 0.85);
+}
+
+.pixel-ticket-inner {
+  box-shadow:
+    inset 2px 2px 0 0 #70490c,
+    inset -2px -2px 0 0 #f5b82e;
+}
+
+.pixel-art {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Hover Glitch Keyframes for Ticket Dourado & PSI */
+@keyframes hsmp-glitch-jitter {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-2px, 1px);
+  }
+  40% {
+    transform: translate(2px, -1px);
+  }
+  60% {
+    transform: translate(-1px, -1px);
+  }
+  80% {
+    transform: translate(2px, 1px);
+  }
+}
+
+@keyframes hsmp-glitch-slice-top {
+  0% {
+    clip-path: inset(8% 0 72% 0);
+    transform: translate(-3px, -1px);
+  }
+  25% {
+    clip-path: inset(38% 0 42% 0);
+    transform: translate(3px, 1px);
+  }
+  50% {
+    clip-path: inset(16% 0 60% 0);
+    transform: translate(-2px, 0);
+  }
+  75% {
+    clip-path: inset(55% 0 22% 0);
+    transform: translate(3px, -1px);
+  }
+  100% {
+    clip-path: inset(12% 0 68% 0);
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes hsmp-glitch-slice-bottom {
+  0% {
+    clip-path: inset(62% 0 10% 0);
+    transform: translate(3px, 1px);
+  }
+  25% {
+    clip-path: inset(25% 0 54% 0);
+    transform: translate(-3px, -1px);
+  }
+  50% {
+    clip-path: inset(70% 0 8% 0);
+    transform: translate(2px, 1px);
+  }
+  75% {
+    clip-path: inset(44% 0 34% 0);
+    transform: translate(-2px, 0);
+  }
+  100% {
+    clip-path: inset(58% 0 14% 0);
+    transform: translate(0, 0);
+  }
+}
+
+/* Whole-site pre-ticket glitch & PSI Trident emergence */
+@keyframes hsmp-site-glitch {
+  0%,
+  100% {
+    transform: translate(0, 0);
+    filter: none;
+  }
+  12% {
+    transform: translate(-6px, 2px) skewX(-2deg);
+    filter: contrast(1.5) hue-rotate(-14deg);
+  }
+  25% {
+    transform: translate(6px, -3px) skewX(3deg);
+    filter: brightness(1.35) contrast(1.8);
+  }
+  42% {
+    transform: translate(-8px, -1px) skewX(-3deg);
+    filter: invert(0.08) contrast(1.7);
+  }
+  58% {
+    transform: translate(5px, 3px) skewX(2deg);
+    filter: hue-rotate(18deg) contrast(1.5);
+  }
+  74% {
+    transform: translate(-4px, 1px) skewX(-1deg);
+    filter: brightness(1.4);
+  }
+}
+
+@keyframes hsmp-trident-emerge {
+  0% {
+    opacity: 0;
+    transform: scale(0.86) skewX(6deg);
+  }
+  18% {
+    opacity: 1;
+    transform: scale(1.06) translate(-4px, 2px);
+  }
+  36% {
+    opacity: 0.78;
+    transform: scale(0.98) translate(5px, -2px);
+  }
+  55% {
+    opacity: 1;
+    transform: scale(1.03) translate(-3px, 1px);
+  }
+  82% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.08);
+  }
+}
+
+/* Rapid 3301 glitch flash on Aceito o Ticket */
+@keyframes hsmp-3301-core {
+  0% {
+    opacity: 0;
+    transform: scale(1.12) skewX(-8deg);
+    filter: brightness(1.6);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-6px, 2px) scale(1.02) skewX(6deg);
+  }
+  28% {
+    opacity: 0.75;
+    transform: translate(8px, -3px) scale(0.99) skewX(-5deg);
+  }
+  44% {
+    opacity: 1;
+    transform: translate(-4px, 4px) scale(1.04) skewX(3deg);
+    filter: brightness(2);
+  }
+  62% {
+    opacity: 0.85;
+    transform: translate(6px, -2px) scale(1.01) skewX(-6deg);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(-2px, 1px) scale(1.03);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.96);
+    filter: brightness(1);
+  }
+}
+
+@keyframes hsmp-3301-slice-a {
+  0% {
+    clip-path: inset(5% 0 72% 0);
+    transform: translate(-18px, -3px);
+  }
+  20% {
+    clip-path: inset(34% 0 40% 0);
+    transform: translate(16px, 2px);
+  }
+  40% {
+    clip-path: inset(14% 0 62% 0);
+    transform: translate(-22px, -1px);
+  }
+  60% {
+    clip-path: inset(56% 0 18% 0);
+    transform: translate(14px, 3px);
+  }
+  80% {
+    clip-path: inset(22% 0 52% 0);
+    transform: translate(-10px, 0);
+  }
+  100% {
+    clip-path: inset(8% 0 75% 0);
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes hsmp-3301-slice-b {
+  0% {
+    clip-path: inset(68% 0 6% 0);
+    transform: translate(18px, 3px);
+  }
+  20% {
+    clip-path: inset(20% 0 58% 0);
+    transform: translate(-16px, -2px);
+  }
+  40% {
+    clip-path: inset(52% 0 22% 0);
+    transform: translate(20px, 1px);
+  }
+  60% {
+    clip-path: inset(12% 0 68% 0);
+    transform: translate(-14px, -3px);
+  }
+  80% {
+    clip-path: inset(44% 0 32% 0);
+    transform: translate(12px, 2px);
+  }
+  100% {
+    clip-path: inset(60% 0 12% 0);
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes hsmp-3301-bar {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: translateY(0);
+  }
+  25% {
+    opacity: 0.9;
+    transform: translateY(-28px);
+  }
+  50% {
+    opacity: 0.4;
+    transform: translateY(36px);
+  }
+  75% {
+    opacity: 0.95;
+    transform: translateY(-12px);
+  }
+}
+
+.animate-site-glitch {
+  animation: hsmp-site-glitch 260ms steps(2, end) infinite;
+}
+
+.animate-trident-emerge {
+  animation: hsmp-trident-emerge 1050ms steps(4, end) forwards;
+}
+
+.animate-3301-core {
+  animation: hsmp-3301-core 680ms steps(2, end) forwards;
+}
+
+.animate-3301-slice-a {
+  animation: hsmp-3301-slice-a 240ms steps(2, end) infinite;
+}
+
+.animate-3301-slice-b {
+  animation: hsmp-3301-slice-b 210ms steps(2, end) infinite;
+}
+
+.animate-3301-bar {
+  animation: hsmp-3301-bar 180ms steps(2, end) infinite;
+}
+
+.glitch-scanlines {
+  background-image: repeating-linear-gradient(
+    to bottom,
+    rgba(34, 255, 102, 0.08) 0px,
+    rgba(34, 255, 102, 0.08) 1px,
+    transparent 1px,
+    transparent 4px
+  );
+}
+
+.glitch-hover {
+  position: relative;
+  display: inline-block;
+  cursor: default;
+}
+
+.glitch-hover::before,
+.glitch-hover::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.glitch-hover:hover,
+.glitch-hover:focus-visible {
+  animation: hsmp-glitch-jitter 220ms steps(2, end) infinite;
+}
+
+.glitch-hover:hover::before,
+.glitch-hover:focus-visible::before {
+  opacity: 0.9;
+  color: #ef4444;
+  text-shadow: -2px 0 #ef4444;
+  animation: hsmp-glitch-slice-top 260ms steps(2, end) infinite;
+}
+
+.glitch-hover:hover::after,
+.glitch-hover:focus-visible::after {
+  opacity: 0.9;
+  color: #38bdf8;
+  text-shadow: 2px 0 #38bdf8;
+  animation: hsmp-glitch-slice-bottom 240ms steps(2, end) infinite reverse;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .animate-site-glitch,
+  .animate-trident-emerge {
+    animation: none;
+  }
+
+  .glitch-hover:hover,
+  .glitch-hover:focus-visible,
+  .glitch-hover:hover::before,
+  .glitch-hover:focus-visible::before,
+  .glitch-hover:hover::after,
+  .glitch-hover:focus-visible::after {
+    animation: none;
+  }
+}

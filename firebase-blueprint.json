@@ -1,0 +1,116 @@
+{
+  "entities": {
+    "GoldenTicket": {
+      "title": "GoldenTicket",
+      "description": "Minecraft player golden train ticket issued for HSMP boarding.",
+      "type": "object",
+      "properties": {
+        "ownerUid": {
+          "type": "string",
+          "description": "Authenticated Firebase user UID owning this ticket.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "minecraftNick": {
+          "type": "string",
+          "description": "Player Minecraft username (3-16 alphanumeric/underscore chars).",
+          "minLength": 3,
+          "maxLength": 16,
+          "pattern": "^[a-zA-Z0-9_]+$"
+        },
+        "ticketCode": {
+          "type": "string",
+          "description": "Unique HSMP golden train ticket code.",
+          "minLength": 8,
+          "maxLength": 24,
+          "pattern": "^HSMP-[A-Z0-9-]+$"
+        },
+        "platformNumber": {
+          "type": "string",
+          "description": "Assigned station platform.",
+          "minLength": 1,
+          "maxLength": 8
+        },
+        "carriageCode": {
+          "type": "string",
+          "description": "Assigned train carriage.",
+          "minLength": 1,
+          "maxLength": 16
+        },
+        "emailStatus": {
+          "type": "string",
+          "description": "Production welcome email dispatch status.",
+          "enum": ["pending", "sent", "preview_ready"]
+        },
+        "issuedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when ticket was first issued."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of the last ticket update."
+        }
+      },
+      "required": [
+        "ownerUid",
+        "minecraftNick",
+        "ticketCode",
+        "platformNumber",
+        "carriageCode",
+        "emailStatus",
+        "issuedAt",
+        "updatedAt"
+      ]
+    },
+    "PlayerPrivate": {
+      "title": "PlayerPrivate",
+      "description": "Isolated PII record for player email and notification timestamps.",
+      "type": "object",
+      "properties": {
+        "ownerUid": {
+          "type": "string",
+          "description": "Authenticated Firebase user UID.",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "^[a-zA-Z0-9_\\-]+$"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Verified player email address.",
+          "minLength": 5,
+          "maxLength": 254
+        },
+        "lastNotifiedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last production email dispatch."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp when record was created."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp of last record update."
+        }
+      },
+      "required": ["ownerUid", "email", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/tickets/{ticketId}": {
+      "schema": { "$ref": "#/entities/GoldenTicket" },
+      "description": "Golden train tickets keyed by authenticated user UID."
+    },
+    "/playerPrivate/{userId}": {
+      "schema": { "$ref": "#/entities/PlayerPrivate" },
+      "description": "Private player email records isolated from public/ticket documents."
+    }
+  }
+}
