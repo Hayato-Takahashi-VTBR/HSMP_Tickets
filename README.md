@@ -8,6 +8,8 @@ envio de e-mails.
 
 O workflow `.github/workflows/deploy-pages.yml` compila e publica o site no
 GitHub Pages sempre que há um push para `main` (ou execução manual em Actions).
+Ele também sincroniza o `index.html` e os assets compilados à raiz da branch
+para que o site abra quando o Pages estiver configurado para publicar `main`.
 O endereço esperado é:
 
 `https://hayato-takahashi-vtbr.github.io/HSMP_Tickets/`

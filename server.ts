@@ -374,6 +374,12 @@ async function createServer() {
       server: { middlewareMode: true },
       appType: 'spa',
     });
+    app.use((req, _res, next) => {
+      if (req.path === '/') {
+        req.url = '/app.html';
+      }
+      next();
+    });
     app.use(vite.middlewares);
   } else {
     const distDir = path.resolve(__dirname, 'dist');

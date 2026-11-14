@@ -5,8 +5,13 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: process.env.GITHUB_ACTIONS === 'true' ? '/HSMP_Tickets/' : '/',
+    base: process.env.GITHUB_ACTIONS === 'true' ? './' : '/',
     plugins: [react(), tailwindcss()],
+    build: {
+      rollupOptions: {
+        input: path.resolve(__dirname, 'app.html'),
+      },
+    },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, '.'),
