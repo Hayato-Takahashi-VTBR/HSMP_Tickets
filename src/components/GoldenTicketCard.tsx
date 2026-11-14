@@ -68,6 +68,51 @@ export function PixelTridentSprite({ size = 48 }: { size?: number }) {
   );
 }
 
+function PixelTrainSprite() {
+  const rows = [
+    '0000000001111000',
+    '0000000001221000',
+    '0011000001111000',
+    '0012111111111100',
+    '0112222222222110',
+    '0122232222322210',
+    '1111111111111111',
+    '0033003300330033',
+    '0011001100110011',
+  ];
+  const palette: Record<string, string> = {
+    '1': '#FFF0A5',
+    '2': '#F5B82E',
+    '3': '#8C580A',
+  };
+
+  return (
+    <svg
+      width="64"
+      height="36"
+      viewBox="0 0 16 9"
+      shapeRendering="crispEdges"
+      aria-label="Trem pixelado"
+      className="shrink-0"
+    >
+      {rows.map((row, y) =>
+        row.split('').map((ch, x) =>
+          ch === '0' ? null : (
+            <rect
+              key={`${x}-${y}`}
+              x={x}
+              y={y}
+              width={1}
+              height={1}
+              fill={palette[ch]}
+            />
+          ),
+        ),
+      )}
+    </svg>
+  );
+}
+
 export function GoldenTicketCard({
   ticket,
   hasEmailPreview,
@@ -172,7 +217,7 @@ export function GoldenTicketCard({
                     </span>
                   </h3>
                 </div>
-                <PixelTridentSprite />
+                <PixelTrainSprite />
               </div>
 
               {/* Player Identity Row with Real Minecraft Skin */}

@@ -116,31 +116,22 @@ function loadSameOriginSkinImage(nick: string): Promise<HTMLImageElement | null>
   });
 }
 
-function drawPixelTridentSprite(ctx: CanvasRenderingContext2D, ox: number, oy: number, px: number) {
-  // 16x16 Minecraft-inspired pixelated trident
+function drawPixelTrainSprite(ctx: CanvasRenderingContext2D, ox: number, oy: number, px: number) {
   const grid = [
-    '0000000100000000',
-    '0000001210000000',
-    '0000101210100000',
-    '0001201210210000',
-    '0001201210210000',
-    '0001213331210000',
-    '0000133433100000',
-    '0000001410000000',
-    '0000001310000000',
-    '0000001410000000',
-    '0000001310000000',
-    '0000001410000000',
-    '0000001310000000',
-    '0000001410000000',
-    '0000001210000000',
-    '0000000100000000',
+    '0000000001111000',
+    '0000000001221000',
+    '0011000001111000',
+    '0012111111111100',
+    '0112222222222110',
+    '0122232222322210',
+    '1111111111111111',
+    '0033003300330033',
+    '0011001100110011',
   ];
   const palette: Record<string, string> = {
-    '1': '#FFE999',
-    '2': '#2DD4BF',
-    '3': '#F5B82E',
-    '4': '#9A630D',
+    '1': '#FFF0A5',
+    '2': '#F5B82E',
+    '3': '#8C580A',
   };
   for (let y = 0; y < grid.length; y += 1) {
     for (let x = 0; x < grid[y].length; x += 1) {
@@ -225,8 +216,8 @@ export async function downloadGoldenTicketPng(ticket: GoldenTicketData): Promise
   ctx.font = '700 44px Georgia, serif';
   ctx.fillText('TICKET DOURADO', 104, 178);
 
-  // Pixelated Trident
-  drawPixelTridentSprite(ctx, 816, 102, 5);
+  // Pixelated Train
+  drawPixelTrainSprite(ctx, 768, 114, 6);
 
   const avatarX = 104;
   const avatarY = 224;
