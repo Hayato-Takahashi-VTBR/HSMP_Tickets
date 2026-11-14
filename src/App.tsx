@@ -26,6 +26,7 @@ import {
   logoutPlayer,
   OperationType,
 } from './lib/firebase';
+import { apiUrl } from './lib/api';
 import { soundFX } from './lib/soundEffects';
 import {
   DISEMBARK_DATE,
@@ -260,7 +261,7 @@ export default function App() {
         `Despachando carta oficial da produção para ${user.email}...`,
       );
 
-      const emailRes = await fetch('/api/send-welcome-email', {
+      const emailRes = await fetch(apiUrl('/api/send-welcome-email'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

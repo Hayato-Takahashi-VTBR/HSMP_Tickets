@@ -233,6 +233,30 @@ function buildProductionEmailContent(params: {
 
 async function createServer() {
   const app = express();
+  const frontendOrigin = process.env.FRONTEND_ORIGIN?.trim().replace(/\/$/, '');
+
+  app.use((req: Request, res: Response, next) => {
+    const origin = req.get('origin');
+
+    if (frontendOrigin && origin && origin !== frontendOrigin) {
+      res.status(403).json({ error: 'Origem não autorizada.' });
+      return;
+    }
+
+    if (frontendOrigin && origin === frontendOrigin) {
+      res.setHeader('Access-Control-Allow-Origin', frontendOrigin);
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+      res.setHeader('Vary', 'Origin');
+    }
+
+    if (req.method === 'OPTIONS') {
+      res.sendStatus(frontendOrigin && origin !== frontendOrigin ? 403 : 204);
+      return;
+    }
+
+    next();
+  });
   app.use(express.json({ limit: '64kb' }));
 
   app.get('/api/health', (_req: Request, res: Response) => {

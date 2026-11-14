@@ -1,3 +1,5 @@
+import { apiUrl } from './api';
+
 export const MINECRAFT_NICK_REGEX = /^[a-zA-Z0-9_]{3,16}$/;
 export const DISEMBARK_DATE = '20/12/2026';
 
@@ -109,7 +111,7 @@ function loadSameOriginSkinImage(nick: string): Promise<HTMLImageElement | null>
     const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = () => resolve(null);
-    img.src = `/api/minecraft-skin/${encodeURIComponent(nick)}`;
+    img.src = apiUrl(`/api/minecraft-skin/${encodeURIComponent(nick)}`);
   });
 }
 

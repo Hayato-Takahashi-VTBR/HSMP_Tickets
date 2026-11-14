@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: hsmp-tickets-api
+    runtime: node
+    plan: free
+    buildCommand: npm install --omit=dev --legacy-peer-deps
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: 22.18.0
+      - key: FRONTEND_ORIGIN
+        value: https://hayato-takahashi-vtbr.github.io

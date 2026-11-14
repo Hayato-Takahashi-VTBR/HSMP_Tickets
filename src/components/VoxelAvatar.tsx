@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { apiUrl } from '../lib/api';
 import { buildVoxelAvatarGrid, MINECRAFT_NICK_REGEX } from '../lib/ticketUtils';
 
 interface VoxelAvatarProps {
@@ -53,7 +54,7 @@ export function VoxelAvatar({
   );
 
   const skinSrc = debouncedNick
-    ? `/api/minecraft-skin/${encodeURIComponent(debouncedNick)}`
+    ? apiUrl(`/api/minecraft-skin/${encodeURIComponent(debouncedNick)}`)
     : null;
 
   return (
