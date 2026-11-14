@@ -8,11 +8,14 @@ envio de e-mails.
 
 O workflow `.github/workflows/deploy-pages.yml` compila e publica o site no
 GitHub Pages sempre que há um push para `main` (ou execução manual em Actions).
-Durante a publicação, ele também configura o GitHub Actions como origem do
-Pages para evitar que o GitHub sirva o HTML de desenvolvimento da branch.
 O endereço esperado é:
 
 `https://hayato-takahashi-vtbr.github.io/HSMP_Tickets/`
+
+Antes da primeira publicação, em **Settings → Pages → Build and deployment**,
+selecione **GitHub Actions** como origem. Essa configuração é feita uma vez nas
+configurações do repositório; o token do workflow não altera as configurações
+administrativas do Pages.
 
 ### 1. Publicar a API
 

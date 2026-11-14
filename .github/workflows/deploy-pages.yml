@@ -37,16 +37,6 @@ jobs:
         with:
           enablement: true
 
-      - name: Use GitHub Actions as Pages source
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.request('PUT /repos/{owner}/{repo}/pages', {
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              build_type: 'workflow',
-            });
-
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
