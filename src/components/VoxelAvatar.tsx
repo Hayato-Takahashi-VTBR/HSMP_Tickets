@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { apiUrl } from '../lib/api';
+import { minecraftSkinUrl } from '../lib/api';
 import { buildVoxelAvatarGrid, MINECRAFT_NICK_REGEX } from '../lib/ticketUtils';
 
 interface VoxelAvatarProps {
@@ -54,7 +54,7 @@ export function VoxelAvatar({
   );
 
   const skinSrc = debouncedNick
-    ? apiUrl(`/api/minecraft-skin/${encodeURIComponent(debouncedNick)}`)
+    ? minecraftSkinUrl(debouncedNick)
     : null;
 
   return (
@@ -84,6 +84,7 @@ export function VoxelAvatar({
           ref={imgRef}
           key={skinSrc}
           src={skinSrc}
+          crossOrigin="anonymous"
           alt={`Skin real de ${debouncedNick} no Minecraft`}
           referrerPolicy="no-referrer"
           onLoad={() => setHasError(false)}

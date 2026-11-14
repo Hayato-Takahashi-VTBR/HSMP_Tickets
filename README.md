@@ -1,7 +1,8 @@
 # HSMP Tickets
 
 Portal React/Vite para emissão de Tickets Dourados, com autenticação e dados no
-Firebase e uma API Express para envio de e-mails e avatares do Minecraft.
+Firebase, avatares do Minecraft carregados do Minotar e uma API Express para
+envio de e-mails.
 
 ## Publicação
 
