@@ -93,6 +93,12 @@ export default function App() {
             ticketCode: String(data.ticketCode || ''),
             platformNumber: String(data.platformNumber || 'PL-01'),
             carriageCode: String(data.carriageCode || 'Vagão 01'),
+            skinRevision:
+              data.updatedAt instanceof Timestamp
+                ? String(data.updatedAt.toMillis())
+                : data.issuedAt instanceof Timestamp
+                  ? String(data.issuedAt.toMillis())
+                  : '0',
             emailStatus:
               data.emailStatus === 'sent'
                 ? 'sent'
@@ -313,6 +319,7 @@ export default function App() {
         ticketCode: meta.ticketCode,
         platformNumber: meta.platformNumber,
         carriageCode: meta.carriageCode,
+        skinRevision: String(Date.now()),
         emailStatus: nextEmailStatus,
         issuedAtLabel: ticket?.issuedAtLabel || formatIssuedDate(null),
       });

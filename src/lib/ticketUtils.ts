@@ -9,6 +9,7 @@ export interface GoldenTicketData {
   ticketCode: string;
   platformNumber: string;
   carriageCode: string;
+  skinRevision: string;
   emailStatus: 'pending' | 'sent' | 'preview_ready';
   issuedAtLabel: string;
 }
@@ -106,13 +107,16 @@ export function buildVoxelAvatarGrid(nick: string): {
   return { ...palette, cells };
 }
 
-function loadSameOriginSkinImage(nick: string): Promise<HTMLImageElement | null> {
+function loadSameOriginSkinImage(
+  nick: string,
+  skinRevision: string,
+): Promise<HTMLImageElement | null> {
   return new Promise((resolve) => {
     const img = new Image();
     img.onload = () => resolve(img);
     img.onerror = () => resolve(null);
     img.crossOrigin = 'anonymous';
-    img.src = minecraftSkinUrl(nick);
+    img.src = minecraftSkinUrl(nick, skinRevision);
   });
 }
 
@@ -227,7 +231,10 @@ export async function downloadGoldenTicketPng(ticket: GoldenTicketData): Promise
   ctx.fillStyle = '#050608';
   ctx.fillRect(avatarX - 2, avatarY - 2, avatarSize + 4, avatarSize + 4);
 
-  const skinImg = await loadSameOriginSkinImage(ticket.minecraftNick);
+  const skinImg = await loadSameOriginSkinImage(
+    ticket.minecraftNick,
+    ticket.skinRevision,
+  );
   if (skinImg) {
     ctx.drawImage(skinImg, avatarX, avatarY, avatarSize, avatarSize);
   } else {

@@ -6,6 +6,7 @@ interface VoxelAvatarProps {
   nick: string;
   size?: number;
   debounceMs?: number;
+  cacheKey?: string | number;
   className?: string;
 }
 
@@ -13,6 +14,7 @@ export function VoxelAvatar({
   nick,
   size = 64,
   debounceMs = 0,
+  cacheKey,
   className = '',
 }: VoxelAvatarProps) {
   const trimmed = nick.trim();
@@ -54,7 +56,7 @@ export function VoxelAvatar({
   );
 
   const skinSrc = debouncedNick
-    ? minecraftSkinUrl(debouncedNick)
+    ? minecraftSkinUrl(debouncedNick, cacheKey)
     : null;
 
   return (

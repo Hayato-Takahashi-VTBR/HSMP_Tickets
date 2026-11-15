@@ -5,6 +5,9 @@ export function apiUrl(path: string): string {
   return `${apiBaseUrl}${normalizedPath}`;
 }
 
-export function minecraftSkinUrl(nick: string): string {
-  return `https://minotar.net/helm/${encodeURIComponent(nick)}/128.png`;
+export function minecraftSkinUrl(nick: string, cacheKey?: string | number): string {
+  const url = `https://minotar.net/helm/${encodeURIComponent(nick)}/128.png`;
+  return cacheKey === undefined
+    ? url
+    : `${url}?v=${encodeURIComponent(String(cacheKey))}`;
 }

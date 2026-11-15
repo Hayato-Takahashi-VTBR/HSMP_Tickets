@@ -222,7 +222,11 @@ export function GoldenTicketCard({
 
               {/* Player Identity Row with Real Minecraft Skin */}
               <div className="flex flex-col gap-4 border-y-2 border-[#2A200C] bg-[#06070A] p-4 sm:flex-row sm:items-center">
-                <VoxelAvatar nick={ticket.minecraftNick} size={80} />
+                <VoxelAvatar
+                  nick={ticket.minecraftNick}
+                  size={80}
+                  cacheKey={ticket.skinRevision}
+                />
                 <div className="min-w-0 flex-1">
                   <div className="flex flex-wrap items-center justify-between gap-2 font-mono text-[11px] tracking-wider text-[#8E95A5]">
                     <span>PASSAGEIRO (MINECRAFT)</span>
