@@ -225,12 +225,24 @@ export default function App() {
         try {
           await updateDoc(ticketRef, {
             minecraftNick,
+            emailStatus: 'pending',
             updatedAt: serverTimestamp(),
           });
         } catch (err) {
           handleFirestoreError(err, OperationType.UPDATE, `tickets/${user.uid}`);
         }
       }
+
+      const savedTicket: GoldenTicketData = {
+        ownerUid: user.uid,
+        minecraftNick,
+        ticketCode: meta.ticketCode,
+        platformNumber: meta.platformNumber,
+        carriageCode: meta.carriageCode,
+        skinRevision: String(Date.now()),
+        emailStatus: 'pending',
+        issuedAtLabel: ticket?.issuedAtLabel || formatIssuedDate(null),
+      };
 
       const existingPrivate = await getDoc(privateRef).catch((err) =>
         handleFirestoreError(err, OperationType.GET, `playerPrivate/${user.uid}`),
@@ -257,6 +269,16 @@ export default function App() {
         }
       }
 
+      setShowTridentGlitch(true);
+      soundFX.playGlitchBurst(0.95);
+      await new Promise<void>((resolve) => {
+        window.setTimeout(() => resolve(), 1050);
+      });
+      setShowTridentGlitch(false);
+      setTicket(savedTicket);
+      setEmailPreview(null);
+      setShowEmailModal(false);
+
       appendLog(
         'BANCO',
         `Ticket Dourado ${meta.ticketCode} registrado para ${minecraftNick}.`,
@@ -278,6 +300,17 @@ export default function App() {
           carriageCode: meta.carriageCode,
         }),
       });
+
+      if (
+        !emailRes.headers
+          .get('content-type')
+          ?.toLowerCase()
+          .includes('application/json')
+      ) {
+        throw new Error(
+          'A API de e-mail retornou uma página HTML em vez de JSON. Verifique se VITE_API_BASE_URL aponta para o serviço ativo no Render.',
+        );
+      }
 
       const emailJson = (await emailRes.json()) as DispatchedEmailPreview & {
         error?: string;
@@ -303,27 +336,9 @@ export default function App() {
         handleFirestoreError(err, OperationType.UPDATE, `tickets/${user.uid}`);
       }
 
-      // Whole-site glitch + PSI Trident symbol before revealing the Ticket
-      setShowTridentGlitch(true);
-      soundFX.playGlitchBurst(0.95);
-
-      await new Promise<void>((resolve) => {
-        window.setTimeout(() => resolve(), 1050);
-      });
-
-      setShowTridentGlitch(false);
-
-      setTicket({
-        ownerUid: user.uid,
-        minecraftNick,
-        ticketCode: meta.ticketCode,
-        platformNumber: meta.platformNumber,
-        carriageCode: meta.carriageCode,
-        skinRevision: String(Date.now()),
-        emailStatus: nextEmailStatus,
-        issuedAtLabel: ticket?.issuedAtLabel || formatIssuedDate(null),
-      });
-
+      setTicket((current) =>
+        current ? { ...current, emailStatus: nextEmailStatus } : current,
+      );
       soundFX.playTicketIssued();
       setEmailPreview(emailJson);
       appendLog(
