@@ -233,7 +233,10 @@ function buildProductionEmailContent(params: {
 
 async function createServer() {
   const app = express();
-  const frontendOrigin = process.env.FRONTEND_ORIGIN?.trim().replace(/\/$/, '');
+  const frontendOrigin = (
+    process.env.FRONTEND_ORIGIN?.trim() ||
+    'https://hayato-takahashi-vtbr.github.io'
+  ).replace(/\/$/, '');
 
   app.use((req: Request, res: Response, next) => {
     const origin = req.get('origin');

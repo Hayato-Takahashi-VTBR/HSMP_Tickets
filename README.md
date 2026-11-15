@@ -38,13 +38,14 @@ causando uma demora na primeira chamada após um período sem uso.
 
 ### 2. Configurar o frontend
 
-No GitHub, em **Settings → Secrets and variables → Actions → Variables**, crie
-a variável `VITE_API_BASE_URL` com a URL base do serviço Render, sem barra final
-nem `/api` (por exemplo, `https://hsmp-tickets-api.onrender.com`). O workflow
-passa esse valor ao build para as chamadas da API.
+O workflow usa `https://hsmp-tickets.onrender.com` por padrão. Se publicar a API
+em outro endereço, defina `VITE_API_BASE_URL` em **Settings → Secrets and
+variables → Actions → Variables** com a URL base do serviço Render, sem barra
+final nem `/api`. O workflow passa esse valor ao build para as chamadas da API.
 
-O Blueprint configura `FRONTEND_ORIGIN` com a origem do GitHub Pages do
-repositório. Ela precisa corresponder exatamente à origem pública do site.
+A API usa por padrão a origem do GitHub Pages deste projeto. Se o frontend
+estiver em outra origem, configure `FRONTEND_ORIGIN` no serviço Render; o valor
+precisa corresponder exatamente à origem pública do site.
 
 ### 3. Autorizar Firebase
 
